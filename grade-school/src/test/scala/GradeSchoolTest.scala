@@ -53,4 +53,17 @@ class GradeSchoolTest extends AnyFunSuite with Matchers with OneInstancePerTest 
     school.sorted should be (sorted)
     school.sorted.keys.toList should be (Seq(3, 4, 6))
   }
+
+  test ("add student twice") {
+    school.add("Jennifer", 4)
+    school.add("Jennifer", 4)
+    school.grade(4) should be (Seq("Jennifer"))
+  }
+
+  test ("add student twice to roster") {
+    school.add("Jennifer", 4)
+    school.add("Jennifer", 6)
+    school.grade(4) should be (Seq("Jennifer"))
+    school.grade(6) should be (Seq.empty)
+  }
 }

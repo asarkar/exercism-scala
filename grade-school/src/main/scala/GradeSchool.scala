@@ -1,16 +1,18 @@
-import scala.math.Ordering.Implicits.seqOrdering
+import scala.collection.immutable.SortedMap
 
 class School:
   type DB = Map[Int, Seq[String]]
+  var students = Set.empty[String]
 
   def add(name: String, grade: Int) =
-    db = db.updatedWith(grade): 
-      case Some(names) => Some(names :+ name)
-      case None => Some(Seq(name))
+    if !students.contains(name) then
+      db = db.updatedWith(grade): 
+        case Some(names) => Some(names :+ name)
+        case None => Some(Seq(name))
+      students = students + name
 
-  var db: DB = Map.empty[Int, Seq[String]]
+  var db: DB = SortedMap.empty[Int, Seq[String]]
 
   def grade(grade: Int): Seq[String] = db.getOrElse(grade, Seq.empty)
 
-  def sorted: DB = db.toSeq.sorted.map(kv => (kv._1, kv._2.sorted)).toMap
-
+  def sorted: DB = db.toSeq.map((grade, names) => (grade, names.sorted)).toMap

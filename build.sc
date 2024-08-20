@@ -47,3 +47,23 @@ object `space-age` extends ExercismModule {
 object `grade-school` extends ExercismModule {
   object test extends ExercismTestModule
 }
+
+object bob extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object hamming extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object etl extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object `reverse-string` extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object `robot-simulator` extends ExercismModule {
+  object test extends ExercismTestModule
+}

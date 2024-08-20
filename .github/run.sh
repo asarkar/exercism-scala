@@ -35,6 +35,7 @@ if (( no_test == 0 )); then
   if [[ -z "$1" ]]; then
     ./mill __.test
   elif ./mill resolve "$1".test &>/dev/null; then
+    find "$1" -name "*.scala" -exec sed -i '' '/pending/d' {} +
     ./mill "$1".test
   else
     red='\033[0;31m'
