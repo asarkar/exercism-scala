@@ -67,3 +67,23 @@ object `reverse-string` extends ExercismModule {
 object `robot-simulator` extends ExercismModule {
   object test extends ExercismTestModule
 }
+
+object `secret-handshake` extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object `robot-name` extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object `matching-brackets` extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object `armstrong-numbers` extends ExercismModule {
+  object test extends ExercismTestModule
+}
+
+object `collatz-conjecture` extends ExercismModule {
+  object test extends ExercismTestModule
+}
