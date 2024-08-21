@@ -2,7 +2,7 @@ import scala.collection.immutable.SortedMap
 
 class School:
   type DB = Map[Int, Seq[String]]
-  var students = Set.empty[String]
+  private var students = Set.empty[String]
 
   def add(name: String, grade: Int) =
     if !students.contains(name) then
