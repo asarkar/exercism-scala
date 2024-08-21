@@ -34,9 +34,9 @@ done
 if (( no_test == 0 )); then
   if [[ -z "$1" ]]; then
     ./mill __.test
-  elif ./mill resolve "$1".test &>/dev/null; then
+  elif ./mill resolve modules["$1"].__.test &>/dev/null; then
     find "$1" -name "*.scala" -exec sed -i '' '/pending/d' {} +
-    ./mill "$1".test
+    ./mill modules["$1"].__.test
   else
     red='\033[0;31m'
     no_color='\033[0m'
@@ -46,8 +46,8 @@ fi
 
 if (( no_lint == 0 )); then
 	if [[ -z "${CI}" ]]; then
-	  ./mill mill.scalalib.scalafmt.ScalafmtModule/reformat
+	  ./mill mill.scalalib.scalafmt.ScalafmtModule/reformatAll modules[_].sources
 	else
-		./mill mill.scalalib.scalafmt.ScalafmtModule/checkFormat
+		./mill mill.scalalib.scalafmt.ScalafmtModule/checkFormatAll modules[_].sources
 	fi
 fi

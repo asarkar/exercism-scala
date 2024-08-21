@@ -6,9 +6,9 @@ class School:
 
   def add(name: String, grade: Int) =
     if !students.contains(name) then
-      db = db.updatedWith(grade): 
+      db = db.updatedWith(grade):
         case Some(names) => Some(names :+ name)
-        case None => Some(Seq(name))
+        case None        => Some(Seq(name))
       students = students + name
 
   var db: DB = SortedMap.empty[Int, Seq[String]]

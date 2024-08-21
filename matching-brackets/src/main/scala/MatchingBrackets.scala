@@ -10,13 +10,8 @@ object MatchingBrackets:
     // https://www.scala-lang.org/api/3.x/scala/util/boundary$.html
     boundary:
       for c <- brackets do
-        if pairs.contains(c) && stack.headOption != pairs.get(c) then
-          break(false)
-        else if pairs.values.exists(_ == c) then
-          stack.push(c)
-        else if pairs.contains(c) then
-          stack.pop()
-      
-      stack.isEmpty
-      
+        if pairs.contains(c) && stack.headOption != pairs.get(c) then break(false)
+        else if pairs.values.exists(_ == c) then stack.push(c)
+        else if pairs.contains(c) then stack.pop()
 
+      stack.isEmpty

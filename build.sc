@@ -1,7 +1,18 @@
 import mill._, scalalib._, scalafmt._
 
-trait ExercismModule extends SbtModule with ScalafmtModule {
+def isSbtProject(p: os.Path) = os.exists(p / "build.sbt")
+def moduleNames = interp.watchValue(
+    os.walk(millSourcePath, !isSbtProject(_), maxDepth = 1)
+      .map(_.last)
+)
+
+object modules extends Cross[ExercismModule](moduleNames)
+
+trait ExercismModule extends SbtModule with Cross.Module[String] with ScalafmtModule {
   def scalaVersion = "3.4.2"
+
+  // Ends with 'modules' that need to be removed
+  def millSourcePath = super.millSourcePath / os.up / crossValue
 
   def scalacOptions: T[Seq[String]] = Seq(
     "-encoding", "UTF-8",
@@ -16,9 +27,8 @@ trait ExercismModule extends SbtModule with ScalafmtModule {
     "-source", "future",
   )
 
-  trait ExercismTestModule extends SbtTests with TestModule.ScalaTest {
+  object test extends SbtTests with TestModule.ScalaTest {
    def scalatestVersion = "3.2.19"
-
    def scalacOptions: T[Seq[String]] = Seq("-encoding", "UTF-8")
 
    def ivyDeps = Agg(
@@ -26,64 +36,4 @@ trait ExercismModule extends SbtModule with ScalafmtModule {
       ivy"org.scalatest::scalatest:$scalatestVersion",
     )
   }
-}
-
-object `hello-world` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `two-fer` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object leap extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `space-age` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `grade-school` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object bob extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object hamming extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object etl extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `reverse-string` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `robot-simulator` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `secret-handshake` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `robot-name` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `matching-brackets` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `armstrong-numbers` extends ExercismModule {
-  object test extends ExercismTestModule
-}
-
-object `collatz-conjecture` extends ExercismModule {
-  object test extends ExercismTestModule
 }
