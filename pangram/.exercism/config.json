@@ -1,0 +1,28 @@
+{
+  "authors": [
+    "ricemery"
+  ],
+  "contributors": [
+    "ErikSchierboom",
+    "ppartarr",
+    "rajeshpg",
+    "Trevoke"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/Pangrams.scala"
+    ],
+    "test": [
+      "src/test/scala/PangramTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Determine if a sentence is a pangram.",
+  "source": "Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/Pangram"
+}
