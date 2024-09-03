@@ -1,0 +1,28 @@
+{
+  "authors": [
+    "matteobaglini"
+  ],
+  "contributors": [
+    "abo64",
+    "ErikSchierboom",
+    "ppartarr",
+    "ricemery"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/BeerSong.scala"
+    ],
+    "test": [
+      "src/test/scala/BeerSongTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Produce the lyrics to that beloved classic, that field-trip favorite: 99 Bottles of Beer on the Wall.",
+  "source": "Learn to Program by Chris Pine",
+  "source_url": "https://pine.fm/LearnToProgram/?Chapter=06"
+}
