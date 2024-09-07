@@ -1,0 +1,27 @@
+{
+  "authors": [
+    "ricemery"
+  ],
+  "contributors": [
+    "ErikSchierboom",
+    "ppartarr",
+    "rajeshpg"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/Cipher.scala"
+    ],
+    "test": [
+      "src/test/scala/CipherTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Implement a simple shift cipher like Caesar and a more secure substitution cipher.",
+  "source": "Substitution Cipher at Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/Substitution_cipher"
+}

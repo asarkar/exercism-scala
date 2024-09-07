@@ -9,7 +9,7 @@ def moduleNames = interp.watchValue(
 object modules extends Cross[ExercismModule](moduleNames)
 
 trait ExercismModule extends SbtModule with Cross.Module[String] with ScalafmtModule {
-  def scalaVersion = "3.4.2"
+  val scalaVersion = "3.4.2"
 
   // Ends with 'modules' that need to be removed
   def millSourcePath = super.millSourcePath / os.up / crossValue
@@ -28,12 +28,14 @@ trait ExercismModule extends SbtModule with Cross.Module[String] with ScalafmtMo
   )
 
   object test extends SbtTests with TestModule.ScalaTest {
-   def scalatestVersion = "3.2.19"
+   val scalatestVersion = "3.2.19"
+   val scalacheckVersion = "3.2.19.0"
    def scalacOptions: T[Seq[String]] = Seq("-encoding", "UTF-8")
 
    def ivyDeps = Agg(
       ivy"org.scalactic::scalactic:$scalatestVersion",
       ivy"org.scalatest::scalatest:$scalatestVersion",
+      ivy"org.scalatestplus::scalacheck-1-18:$scalacheckVersion"
     )
   }
 }

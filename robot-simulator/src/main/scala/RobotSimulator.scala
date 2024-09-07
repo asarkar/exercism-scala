@@ -5,11 +5,10 @@ extension (r: Robot)
   def turnLeft: Robot  = turn('L')
 
   private def turn(c: Char): Robot =
-    val bearings = Bearing.values.toIndexedSeq
-    val i        = bearings.indexOf(r.bearing)
+    val i = r.bearing.ordinal
     val b = c match
-      case 'L' => bearings(Math.floorMod(i - 1, 4))
-      case _   => bearings((i + 1) % 4)
+      case 'L' => Bearing.fromOrdinal(Math.floorMod(i - 1, 4))
+      case _   => Bearing.fromOrdinal((i + 1) % 4)
 
     Robot(b, r.coordinates)
 

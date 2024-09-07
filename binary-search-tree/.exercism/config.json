@@ -1,0 +1,26 @@
+{
+  "authors": [
+    "ricemery"
+  ],
+  "contributors": [
+    "ErikSchierboom",
+    "ppartarr",
+    "rajeshpg"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/Bst.scala"
+    ],
+    "test": [
+      "src/test/scala/BstTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Insert and search for numbers in a binary tree.",
+  "source": "Josh Cheek"
+}
