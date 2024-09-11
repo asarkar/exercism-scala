@@ -1,0 +1,27 @@
+{
+  "authors": [
+    "abo64"
+  ],
+  "contributors": [
+    "ppartarr",
+    "rajeshpg",
+    "ricemery"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/RunLengthEncoding.scala"
+    ],
+    "test": [
+      "src/test/scala/RunLengthEncodingTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Implement run-length encoding and decoding.",
+  "source": "Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/Run-length_encoding"
+}
