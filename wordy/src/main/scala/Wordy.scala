@@ -21,8 +21,7 @@ object Wordy:
         eval(n, s)
 
   private def parseNum(text: String): (Option[Int], String, String) =
-    // Without unanchored, tries to match the entire string.
-    val num = raw"[-]?\d+".r.unanchored
+    val num = raw"[-]?\d+".r
 
     num.findFirstMatchIn(text) match
       case None => (None, "", "")

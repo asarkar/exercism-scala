@@ -1,0 +1,32 @@
+{
+  "authors": [
+    "ErikSchierboom"
+  ],
+  "contributors": [
+    "abo64",
+    "kytrinyx",
+    "oujesky",
+    "ppartarr",
+    "rajeshpg",
+    "ricemery",
+    "sathish316",
+    "yanick"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/RomanNumerals.scala"
+    ],
+    "test": [
+      "src/test/scala/RomanNumeralsTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Convert modern Arabic numbers into Roman numerals.",
+  "source": "The Roman Numeral Kata",
+  "source_url": "https://codingdojo.org/kata/RomanNumerals/"
+}
