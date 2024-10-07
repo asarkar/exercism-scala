@@ -78,5 +78,5 @@ object OcrNumbers:
       val n           = nums.zipWithIndex.find(_._1 == num)
       val x           = n.map(_._2.toString()).getOrElse("?")
 
-      if rest.exists(!_.isBlank()) then x ++ parseN(rest)
-      else x
+      if rest.forall(_.isBlank()) then x
+      else x ++ parseN(rest)
