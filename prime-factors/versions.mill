@@ -1,0 +1,3 @@
+package build.`prime-factors`
+
+val jmhCoreVersion = "1.37"

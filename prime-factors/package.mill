@@ -1,0 +1,14 @@
+package build.`prime-factors`
+
+import mill._, scalalib._
+import $ivy.`com.lihaoyi::mill-contrib-jmh:`
+import contrib.jmh.JmhModule
+import $file.`prime-factors`.{versions => v}
+
+object jmh extends ScalaModule with JmhModule {
+    val m = build.modules("prime-factors")
+    val scalaVersion = m.scalaVersion
+    def scalacOptions = m.scalacOptions
+    def jmhCoreVersion = v.jmhCoreVersion
+    def moduleDeps = m.test.moduleDeps
+}
