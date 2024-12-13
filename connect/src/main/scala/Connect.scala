@@ -14,7 +14,7 @@ class Connect private (board: IndexedSeq[String]):
     val winner = Seq(('O', topRow), ('X', leftCol))
       .find((player, cells) => cells.exists(cell => getVal(cell) == player && bfs(Seq(cell), player)))
 
-    winner.flatMap((w, _) => Color.values.find((_.player == w)))
+    winner.flatMap((w, _) => Color.values.find(_.player == w))
 
   private def hasWon(cell: Cell, player: Char): Boolean =
     (player == 'O' && cell._1 == m - 1) || (player == 'X' && cell._2 == n - 1)
