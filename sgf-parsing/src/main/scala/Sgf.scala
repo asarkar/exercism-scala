@@ -1,5 +1,4 @@
-// https://github.com/scala/scala-parser-combinators
-import scala.util.parsing.combinator.RegexParsers
+import scala.collection.BufferedIterator
 
 /*
 GameTree   	= '(' Node+ GameTree* ')'
@@ -9,46 +8,80 @@ PropId  		= Letter+
 Letter   		= 'A'..'Z'
 PropVal  		= '[' Text ']'
  */
-object Sgf extends RegexParsers:
 
-  type Tree[A]   = Node[A] // to separate the type from the constructor, cf. Haskell's Data.Tree
-  type Forest[A] = Seq[Tree[A]]
-  case class Node[A](root: A, forest: Forest[A] = Seq.empty[Tree[A]])
+type Tree[A]   = Node[A] // to separate the type from the constructor, cf. Haskell's Data.Tree
+type Forest[A] = Seq[Tree[A]]
+case class Node[A](root: A, forest: Forest[A] = Seq.empty[Tree[A]])
 
-  // A tree of nodes.
-  type SgfTree = Tree[SgfNode]
+// A tree of nodes.
+type SgfTree = Tree[SgfNode]
 
-  // A node is a property list, each key can only occur once.
-  // Keys may have multiple values associated with them.
-  type SgfNode = Map[String, Seq[String]]
+// A node is a property list, each key can only occur once.
+// Keys may have multiple values associated with them.
+type SgfNode = Map[String, Seq[String]]
 
-  def parseSgf(text: String): Option[SgfTree] =
-    parse(parseTree, text) match
-      case Success(tree, _) => tree
-      case Failure(msg, _)  => None
-      case Error(msg, _)    => scala.sys.error(s"ERROR: $msg"); None
+class Sgf private (text: BufferedIterator[Char]):
+  private def parseTree: Either[String, Option[SgfTree]] =
+    if text.nextOption() != Some('(') then Left("tree missing")
+    else
+      for
+        nodes <- parseNodes
+        trees <- Seq
+          .unfold(text.headOption)(c => Option.when(c == Some('('))((parseTree, text.headOption)))
+          .partitionMap(identity) match
+          case (h +: _, rights) => Left(h)
+          case (_, rights)      => Right(nodes.foldRight(rights.flatten) { (root, forest) => List(Node(root, forest)) })
 
-  def parseTree: Parser[Option[SgfTree]] =
-    '(' ~> rep(parseNode) ~ rep(parseTree) <~ ')' ^^ { case nodes ~ tree =>
-      nodes.foldRight(tree.flatten) { (root, forest) => List(Node(root, forest)) }.headOption
-    }
+        _ = while text.headOption == Some(')') do text.next()
+      yield trees.headOption
 
-  def parseNode: Parser[SgfNode] = ';' ~> opt(parseProperties) ^^ { _.getOrElse(Map.empty) }
+  private def parseNodes: Either[String, Seq[SgfNode]] =
+    if text.nextOption() != Some(';') then Left("tree with no nodes")
+    else
+      for
+        node  <- parseProperties
+        nodes <- if text.headOption == Some(';') then parseNodes else Right(Seq.empty)
+      yield node +: nodes
 
-  def parseProperties: Parser[SgfNode] = rep(parseProperty) ^^ { _.toMap }
+  private def parseProperties: Either[String, SgfNode] =
+    for
+      p     <- parseProperty
+      props <- if text.headOption.exists(_.isLetter) then parseProperties else Right(Map.empty)
+    yield (if p._1.isEmpty() then Map.empty else props + p)
 
-  def parseProperty: Parser[(String, Seq[String])] = parseId ~ parseValues ^^ { case k ~ v => (k, v) }
+  private def parseProperty: Either[String, (String, Seq[String])] =
+    for
+      id     <- parseId()
+      values <- if id.isEmpty() then Right(Seq.empty) else parseValues
+    yield (id, values)
 
-  def parseId: Parser[String] = log("[A-Z]+".r)("id")
+  private def parseId(buf: StringBuilder = StringBuilder()): Either[String, String] =
+    val c = text.head
+    if !c.isLetter then Right(buf.mkString)
+    else if c.isUpper then parseId(buf.append(text.next()))
+    else Left("property must be in uppercase")
 
-  def parseValues: Parser[Seq[String]] = rep1('[' ~> log(parseValue())("value") <~ ']')
+  private def parseValues: Either[String, Seq[String]] =
+    if text.nextOption() != Some('[') then Left("properties without delimiter")
+    else
+      val v = parseValue()
+      if text.headOption == Some('[') then parseValues.map(v +: _) else Right(Seq(v))
 
-  def parseValue(escaped: Boolean = false, buf: StringBuilder = StringBuilder()): Parser[String] =
-    acceptIf(escaped || _ != ']')(c => s"$c") >> { c =>
+  private def parseValue(escaped: Boolean = false, buf: StringBuilder = StringBuilder()): String =
+    val c = text.next()
+    if !escaped && c == ']' then buf.mkString
+    else
       if escaped then buf.deleteCharAt(buf.size - 1)
       // There is a test that requires escaped newline gets replaced with nothing.
       if escaped && c == '\n' then buf.append("")
       else if c.isWhitespace then buf.append(" ")
       else buf.append(c)
       parseValue(c == '\\' && !escaped, buf)
-    } | success(buf.mkString)
+
+object Sgf:
+  def parseSgf(text: String): Option[SgfTree] =
+    val buf = Iterator.from(text).buffered
+    new Sgf(buf).parseTree match
+      case Right(tree) if !buf.hasNext => tree
+      case Left(msg)                   => println(s"ERROR: $msg"); None
+      case _                           => scala.sys.error(s"ERROR: remaining input ${buf.mkString}"); None
