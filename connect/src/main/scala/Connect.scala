@@ -23,16 +23,12 @@ class Connect private (board: IndexedSeq[String]):
     board.lift(cell._1).flatMap(_.lift(cell._2)).getOrElse('\u0000')
 
   private def neighbors(cell: Cell, visited: Set[Cell]): Seq[Cell] =
-    for {
-      nxt <- Seq(
-        (cell._1 - 1, cell._2),
-        (cell._1 - 1, cell._2 + 1),
-        (cell._1, cell._2 - 1),
-        (cell._1, cell._2 + 1),
-        (cell._1 + 1, cell._2 - 1),
-        (cell._1 + 1, cell._2)
-      ) if getVal(nxt) == getVal(cell) && !visited.contains(nxt)
-    } yield nxt
+    for
+      x <- -1 to 1
+      y <- -1 to 1
+      nxt = (cell._1 + x, cell._2 + y)
+      if x != y && !visited.contains(nxt) && getVal(nxt) == getVal(cell)
+    yield nxt
 
   private def bfs(q: Seq[Cell], player: Char, visited: Set[Cell] = Set.empty): Boolean =
     q match
