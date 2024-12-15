@@ -14,7 +14,7 @@ object CharSeqReader:
   */
 class CharSeqReader(override val source: java.lang.CharSequence, override val offset: Int) extends Reader[Char]:
 
-  /** Construct a `CharSequenceReader` with its first element at `source(0)` and position `(1,1)`.
+  /** Construct a `CharSeqReader` with its first element at `source(0)` and position `(1,1)`.
     */
   def this(source: java.lang.CharSequence) = this(source, 0)
 
@@ -23,11 +23,10 @@ class CharSeqReader(override val source: java.lang.CharSequence, override val of
   def first =
     if offset < source.length then source.charAt(offset) else CharSeqReader.EofCh
 
-  /** Returns a CharSequenceReader consisting of all elements except the first.
+  /** Returns a CharSeqReader consisting of all elements except the first.
     *
     * @return
-    *   If `atEnd` is `true`, the result will be `this`; otherwise, it's a `CharSequenceReader` containing the rest of
-    *   input.
+    *   If `atEnd` is `true`, the result will be `this`; otherwise, it's a `CharSeqReader` containing the rest of input.
     */
   def rest =
     if offset < source.length then new CharSeqReader(source, offset + 1)
@@ -41,8 +40,8 @@ class CharSeqReader(override val source: java.lang.CharSequence, override val of
     */
   override def drop(n: Int) = new CharSeqReader(source, offset + n)
 
-  /** Returns a String in the form `CharSequenceReader(first, ...)`, or `CharSequenceReader()` if this is `atEnd`.
+  /** Returns a String in the form `CharSeqReader(first, ...)`, or `CharSeqReader()` if this is `atEnd`.
     */
   override def toString: String =
     val c = if atEnd then "" else s"'$first', ..."
-    s"CharSequenceReader($c)"
+    s"CharSeqReader($c)"
