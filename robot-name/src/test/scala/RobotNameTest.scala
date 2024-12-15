@@ -38,9 +38,9 @@ class RobotNameTest extends AnyFunSpec with Matchers {
     val alreadySet = mutable.HashSet.empty[String]
     for(_ <- 0 until 676000 - 6) { // as 6 robot names are generated in the tests above!!
       val name = new Robot().name
-      if (alreadySet contains name) {
+      if alreadySet contains name then
         fail(s"$name is repeated")
-      }
+      
       alreadySet += name
     }
   }

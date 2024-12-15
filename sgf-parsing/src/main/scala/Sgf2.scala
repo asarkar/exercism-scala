@@ -1,5 +1,4 @@
-// https://github.com/scala/scala-parser-combinators
-import scala.util.parsing.combinator.RegexParsers
+import parser.RegexParsers
 
 /*
 GameTree   	= '(' Node+ GameTree* ')'
@@ -22,18 +21,24 @@ object Sgf2 extends RegexParsers:
   // Keys may have multiple values associated with them.
   type SgfNode = Map[String, Seq[String]]
 
+  import ParseResult.*
+
+  override val skipWhitespace = false
+
   def parseSgf(text: String): Option[SgfTree] =
     parseAll(parseTree, text) match
       case Success(tree, _) => tree
       case Failure(msg, _)  => None
-      case Error(msg, _)    => scala.sys.error(s"ERROR: $msg"); None
+      // case Error(msg, _)    => scala.sys.error(s"ERROR: $msg"); None
+
+  import scala.language.implicitConversions
 
   private def parseTree: Parser[Option[SgfTree]] =
-    '(' ~> rep(parseNode) ~ rep(parseTree) <~ ')' ^^ { case nodes ~ tree =>
+    "(" ~> rep(parseNode) ~ rep(parseTree) <~ ")" ^^ { case nodes ~ tree =>
       nodes.foldRight(tree.flatten) { (root, forest) => List(Node(root, forest)) }.headOption
     }
 
-  private def parseNode: Parser[SgfNode] = ';' ~> opt(parseProperties) ^^ { _.getOrElse(Map.empty) }
+  private def parseNode: Parser[SgfNode] = ";" ~> opt(parseProperties) ^^ { _.getOrElse(Map.empty) }
 
   private def parseProperties: Parser[SgfNode] = rep(parseProperty) ^^ { _.toMap }
 
@@ -41,7 +46,7 @@ object Sgf2 extends RegexParsers:
 
   private def parseId: Parser[String] = log("[A-Z]+".r)("id")
 
-  private def parseValues: Parser[Seq[String]] = rep1('[' ~> log(parseValue())("value") <~ ']')
+  private def parseValues: Parser[Seq[String]] = rep1("[" ~> log(parseValue())("value") <~ "]")
 
   private def parseValue(escaped: Boolean = false, buf: StringBuilder = StringBuilder()): Parser[String] =
     acceptIf(escaped || _ != ']')(c => s"$c") >> { c =>

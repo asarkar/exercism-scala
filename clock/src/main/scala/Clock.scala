@@ -5,7 +5,7 @@ object Clock:
   // Integer division truncated toward negative infinity
   private def floorDiv(x: Int, y: Int) =
     val q = x / y
-    if (q * y == x || math.signum(x) == math.signum(y)) then q
+    if q * y == x || math.signum(x) == math.signum(y) then q
     else q - 1
 
   def apply(hour: Int, minutes: Int): Clock =

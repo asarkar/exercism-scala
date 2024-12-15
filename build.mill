@@ -32,8 +32,8 @@ trait ExercismModule extends SbtModule with Cross.Module[String] with ScalafmtMo
     "-source", "future",
   )
 
-  val spDep = ivy"org.scala-lang.modules::scala-parser-combinators:${v.scalaParserVersion}"
-  def ivyDeps = Task{if (crossValue == "sgf-parsing") Seq(spDep) else Seq()}
+  // val spDep = ivy"org.scala-lang.modules::scala-parser-combinators:${v.scalaParserVersion}"
+  // def ivyDeps = Task{if (crossValue == "sgf-parsing") Seq(spDep) else Seq()}
 
   object test extends SbtTests with TestModule.ScalaTest {
    def scalacOptions: T[Seq[String]] = Seq("-encoding", "UTF-8")

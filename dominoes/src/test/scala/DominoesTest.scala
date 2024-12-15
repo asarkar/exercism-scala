@@ -7,15 +7,14 @@ class DominoesTest extends AnyFunSuite with Matchers {
 
   private def check(input: List[(Int, Int)], hasResult: Boolean): Unit = {
     val result = Dominoes.chain(input)
-    if (hasResult) {
+    if hasResult then
       checkChain(result getOrElse fail("should have had a chain, but didn't"), input)
-    }
     else assert(result == None)
   }
 
   private def checkChain(result: List[(Int, Int)], input: List[(Int, Int)]): Unit = {
     def sortDomino(ab: (Int, Int)): (Int, Int) =
-      if (ab._1 > ab._2) ab.swap else ab
+      if ab._1 > ab._2 then ab.swap else ab
     def consecutivesShouldMatch(dominoes: List[((Int, Int), Int)]): Unit =
       dominoes.tails foreach {
         case (a@(_,x), i1)::(b@(y,_), i2)::_ =>
@@ -23,7 +22,7 @@ class DominoesTest extends AnyFunSuite with Matchers {
         case _ =>
       }
     def endsShouldMatch: Unit =
-      if (!result.isEmpty)
+      if !result.isEmpty then
         consecutivesShouldMatch(List((result.last, result.length - 1),
           (result.head, 0)))
 

@@ -17,12 +17,9 @@ object PrimeFactors:
   def factors(i: Long, divisor: Long = 2L, primes: Seq[Long] = Seq.empty): Seq[Long] =
     // Note that we can't stop when divisor > √n, because although one prime factor
     // < √n, the other factor > √n may also be prime and needs to be tested.
-    if (i == 1)
-      primes
-    else if (i % divisor == 0)
-      factors(i / divisor, 2L, primes :+ divisor)
-    else
-      factors(i, divisor + 1L, primes)
+    if i == 1 then primes
+    else if i % divisor == 0 then factors(i / divisor, 2L, primes :+ divisor)
+    else factors(i, divisor + 1L, primes)
 
 import scala.util.boundary, boundary.break
 
