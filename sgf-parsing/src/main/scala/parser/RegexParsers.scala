@@ -54,12 +54,12 @@ trait RegexParsers extends Parsers:
           .from(0)
           .dropWhile(i => i < s.size && (start + i) < source.length && s.charAt(i) == source.charAt((start + i)))
           .next()
-        if i == s.size then
-          val j = start + i
-          Success(source.subSequence(start, j).toString, in.drop(j - offset))
+        val j = start + i
+        if i == s.size then Success(source.subSequence(start, j).toString, in.drop(j - offset))
         else
-          val found = if start == source.length() then "end of source" else s"'${source.charAt(start)}'"
-          Failure(s"'$s' expected but $found found", in.drop(start - offset))
+          val rest = in.drop(start - offset)
+          if start == source.length() then Failure(s"'$s' expected but end of source found", rest)
+          else Failure(s"'$s' expected but '${source.charAt(j)}' found at index $j", rest)
 
   /** A parser that matches a regex string */
   given Conversion[Regex, Parser[String]] = r =>
