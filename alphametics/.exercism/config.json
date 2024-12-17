@@ -1,0 +1,26 @@
+{
+  "authors": [
+    "abo64"
+  ],
+  "contributors": [
+    "ErikSchierboom",
+    "ppartarr",
+    "rajeshpg",
+    "ricemery"
+  ],
+  "files": {
+    "solution": [
+      "src/main/scala/Alphametics.scala"
+    ],
+    "test": [
+      "src/test/scala/AlphameticsTest.scala"
+    ],
+    "example": [
+      ".meta/Example.scala"
+    ],
+    "invalidator": [
+      "build.sbt"
+    ]
+  },
+  "blurb": "Given an alphametics puzzle, find the correct solution."
+}
