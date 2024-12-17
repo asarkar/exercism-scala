@@ -28,7 +28,7 @@ object Sgf2 extends RegexParsers:
   def parseSgf(text: String): Option[SgfTree] =
     parseAll(parseTree, text) match
       case Success(tree, _) => tree
-      case Failure(msg, _)  => None
+      case Failure(msg, _)  => println(msg); None
       // case Error(msg, _)    => scala.sys.error(s"ERROR: $msg"); None
 
   import scala.language.implicitConversions

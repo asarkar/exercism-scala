@@ -20,7 +20,7 @@ class CharSeqReader(override val source: java.lang.CharSequence, override val of
 
   /** Returns the first element of the reader, or EofCh if reader is at its end.
     */
-  def first =
+  def first: Char =
     if offset < source.length then source.charAt(offset) else CharSeqReader.EofCh
 
   /** Returns a CharSeqReader consisting of all elements except the first.
@@ -28,13 +28,13 @@ class CharSeqReader(override val source: java.lang.CharSequence, override val of
     * @return
     *   If `atEnd` is `true`, the result will be `this`; otherwise, it's a `CharSeqReader` containing the rest of input.
     */
-  def rest =
+  def rest: CharSeqReader =
     if offset < source.length then new CharSeqReader(source, offset + 1)
     else this
 
   /** true iff there are no more elements in this reader (except for trailing EofCh's)
     */
-  def atEnd = offset >= source.length
+  def atEnd: Boolean = offset >= source.length
 
   /** Returns an abstract reader consisting of all elements except the first `n` elements.
     */

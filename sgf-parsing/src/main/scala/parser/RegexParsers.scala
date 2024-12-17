@@ -17,9 +17,9 @@ import reader.CharSeqReader
 trait RegexParsers extends Parsers:
   type Elem = Char
 
-  protected val whiteSpace = """\s+""".r
+  protected val whiteSpace: Regex = """\s+""".r
 
-  def skipWhitespace = whiteSpace.toString.length > 0
+  def skipWhitespace: Boolean = whiteSpace.toString.nonEmpty
 
   /** Method called to handle whitespace before parsers.
     *
@@ -46,16 +46,16 @@ trait RegexParsers extends Parsers:
   /** A parser that matches a literal string */
   given Conversion[String, Parser[String]] = s =>
     new Parser[String]:
-      def apply(in: Input) =
+      def apply(in: Input): ParseResult[String] =
         val source = in.source
         val offset = in.offset
         val start  = handleWhiteSpace(source, offset)
         val i = Iterator
           .from(0)
-          .dropWhile(i => i < s.size && (start + i) < source.length && s.charAt(i) == source.charAt((start + i)))
+          .dropWhile(i => i < s.length && (start + i) < source.length && s.charAt(i) == source.charAt((start + i)))
           .next()
         val j = start + i
-        if i == s.size then Success(source.subSequence(start, j).toString, in.drop(j - offset))
+        if i == s.length then Success(source.subSequence(start, j).toString, in.drop(j - offset))
         else
           val rest = in.drop(start - offset)
           if start == source.length() then Failure(s"'$s' expected but end of source found", rest)
@@ -64,7 +64,7 @@ trait RegexParsers extends Parsers:
   /** A parser that matches a regex string */
   given Conversion[Regex, Parser[String]] = r =>
     new Parser[String]:
-      def apply(in: Input) =
+      def apply(in: Input): ParseResult[String] =
         val source = in.source
         val offset = in.offset
         val start  = handleWhiteSpace(source, offset)

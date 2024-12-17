@@ -195,7 +195,6 @@ trait Parsers:
     * being applied.
     */
   def log[T](p: => Parser[T])(name: String): Parser[T] = in =>
-    println(s"trying $name at $in")
     val r = p(in)
     println(s"$name --> $r")
     r
