@@ -6,7 +6,7 @@ object OcrNumbers:
       .map(parseN)
       .mkString(",")
 
-  val nums =
+  private val nums =
     Seq(
       Seq(
         " _ ",
@@ -71,7 +71,7 @@ object OcrNumbers:
     )
 
   private def parseN(xs: Seq[String]): String =
-    if xs.exists(_.size % 3 != 0) then "?"
+    if xs.exists(_.length % 3 != 0) then "?"
     else
       // Process 3 columns at a time.
       val (num, rest) = xs.map(_.splitAt(3)).unzip
