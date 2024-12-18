@@ -35,18 +35,12 @@ if (( no_test == 0 )); then
   if [[ -z "$1" ]]; then
     ./mill __.test
   elif ./mill resolve modules["$1"].__.test &>/dev/null; then
-    if jq --version &>/dev/null; then
-      test_files=$(./mill -s show modules["$1"].__.test.allSourceFiles)
-      test_files=$(jq -cr 'map (split(":")[-1]) | @tsv' <<< "${test_files}")
-      sed -i '' '/pending/d' ${test_files}
-    else
-      find "$1" -name "*Test.scala" -exec sed -i '' '/pending/d' {} +
-    fi
+    find "$1" -name "*Test.scala" -exec sed -i '' '/pending/d' {} +
     ./mill modules["$1"].__.test
   else
     red='\033[0;31m'
     no_color='\033[0m'
-	printf "%bNo tests found in: %s%b\n" "$red" "$1" "$no_color"
+	  printf "%bNo tests found in: %s%b\n" "$red" "$1" "$no_color"
   fi
 fi
 
