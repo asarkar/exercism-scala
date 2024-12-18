@@ -35,7 +35,13 @@ if (( no_test == 0 )); then
   if [[ -z "$1" ]]; then
     ./mill __.test
   elif ./mill resolve modules["$1"].__.test &>/dev/null; then
-    find "$1" -name "*.scala" -exec sed -i '' '/pending/d' {} +
+    if jq --version &>/dev/null; then
+      test_files=$(./mill -s show modules["$1"].__.test.allSourceFiles)
+      test_files=$(jq -cr 'map (split(":")[-1]) | @tsv' <<< "${test_files}")
+      sed -i '' '/pending/d' ${test_files}
+    else
+      find "$1" -name "*Test.scala" -exec sed -i '' '/pending/d' {} +
+    fi
     ./mill modules["$1"].__.test
   else
     red='\033[0;31m'

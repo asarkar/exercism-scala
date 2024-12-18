@@ -1,6 +1,6 @@
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
-import Sgf2._
+import Sgf2.*
 
 /** @version created manually **/
 class Sgf2Test extends AnyFunSuite with Matchers {
